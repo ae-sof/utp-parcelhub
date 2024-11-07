@@ -355,23 +355,12 @@ if st.session_state.page == 'home':
             st.session_state.page = 'cust_service'  # Navigate to 'cust_service'
             placeholder.empty()
         
-        if st.button('Back'):
+        if st.button('Back', key='home_back'):
            st.session_state.page = 'landing'  # Set page to 'landing' page
            placeholder.empty()
-           
-        # Set a re-run flag in session state if it doesn't already exist
-        if 'rerun_flag' not in st.session_state:
-            st.session_state.rerun_flag = False
-
-        # Check if re-run is needed based on your condition
-        if not st.session_state.rerun_flag:
-            # Set the flag to True to avoid future re-runs
-            st.session_state.rerun_flag = True
+        
             
-            # Trigger a re-run
-            st.rerun()
-            
-            
+    
 # Notification Page
 if st.session_state.page == 'notification':
     placeholder.empty()  # Ensure Home page is cleared
@@ -411,40 +400,47 @@ if st.session_state.page == 'notification':
         }
         </style> 
         """, unsafe_allow_html=True)
+        col1, col2 = st.columns([8, 1])
     
-    st.title("Payment Details")
-    st.subheader("Review Payment Information")
+        with col1:
+            st.title("Payment Details")
+            st.subheader("Review Payment Information")
+            
+            # Folder where images and text files are stored
+            PAYMENT_FILE = "payment.txt"
+            PAYMENT_IMG_FOLDER = "payment_images"
 
-    
-    # Folder where images and text files are stored
-    PAYMENT_FILE = "payment.txt"
-    PAYMENT_IMG_FOLDER = "payment_images"
-
-    # Check and display payment details from text file
-    if os.path.exists(PAYMENT_FILE):
-        try:
-            with open(PAYMENT_FILE, "r") as f:
-                payment = f.read()
-            if payment:
-                st.write(payment)
+            # Check and display payment details from text file
+            if os.path.exists(PAYMENT_FILE):
+                try:
+                    with open(PAYMENT_FILE, "r") as f:
+                        payment = f.read()
+                    if payment:
+                        st.write(payment)
+                    else:
+                        st.write("No payment details available at the moment.")
+                except Exception as e:
+                    st.error("Error reading payment details.")
             else:
-                st.write("No payment details available at the moment.")
-        except Exception as e:
-            st.error("Error reading payment details.")
-    else:
-        st.write("No payment details found.")
+                st.write("No payment details found.")
 
-    # Display any images related to the payment (optional)
-    if os.path.exists(PAYMENT_IMG_FOLDER):
-        image_files = os.listdir(PAYMENT_IMG_FOLDER)
-        if image_files:
-            st.subheader("Payment Related Images")
-            for img_file in image_files:
-                st.image(os.path.join(PAYMENT_IMG_FOLDER, img_file), use_column_width=True)
-        else:
-            st.write("No images available.")
-    else:
-        st.write("Image folder not found.")
+            # Display any images related to the payment (optional)
+            if os.path.exists(PAYMENT_IMG_FOLDER):
+                image_files = os.listdir(PAYMENT_IMG_FOLDER)
+                if image_files:
+                    st.subheader("Payment Related Images")
+                    for img_file in image_files:
+                        st.image(os.path.join(PAYMENT_IMG_FOLDER, img_file), width=200)
+                else:
+                    st.write("No images available.")
+            else:
+                st.write("Image folder not found.")
+                
+        with col2:
+            st.write("")
+            if st.button("Back"):
+                st.session_state.page ='home'
+        
         
 # Information Page           
 if st.session_state.page == 'information':
@@ -1207,20 +1203,8 @@ if st.session_state.page == 'parcel_hub':
         
 
 if st.session_state.page == 'pb_register':
-    placeholder.empty()    
+    placeholder.empty()
     with placeholder.container():
-        # Set a re-run flag in session state if it doesn't already exist
-        if 'rerun_flag' not in st.session_state:
-            st.session_state.rerun_flag = False
-
-        # Check if re-run is needed based on your condition
-        if not st.session_state.rerun_flag:
-            # Set the flag to True to avoid future re-runs
-            st.session_state.rerun_flag = True
-
-            # Trigger a re-run
-            st.rerun()
-            
         st.markdown("""
         <style>
         .stApp {
@@ -1237,14 +1221,10 @@ if st.session_state.page == 'pb_register':
         .stButton button {
             color: #ffffff;  
             background-color: #d8a15d;
-            display: flex;
-            justify-content: center;
             border-radius: 8px;
             padding: 5px 15px;
             font-size: 18px;
             border: 1px solid transparent;
-            display: flex;
-            justify-content: center;
             margin: auto;
         }
         .stButton button:hover {
@@ -1254,21 +1234,20 @@ if st.session_state.page == 'pb_register':
         }    
         </style>
         """, unsafe_allow_html=True)
-        
-        col1, col2 = st.columns([8,1])
-        
+
+        col1, col2 = st.columns([8, 1])
+
         with col1:
             login = st.selectbox("Go to", ["Sign In", "Sign Up"])
-            
+
             if login == 'Sign Up':
-                
                 st.markdown('<h2>Sign Up</h2>', unsafe_allow_html=True)
                 st.markdown('<p>Fill in the details below to sign up.</p>', unsafe_allow_html=True)
-                
+
                 # Input fields for user data
                 create_uname = st.text_input("Username", "Create username")
                 create_password = st.text_input("Create a password", type="password")
-                
+
                 if st.button("Sign Up"):
                     # Define CSV file path
                     pb_data_path = 'pb_admin_data.csv'
@@ -1276,99 +1255,58 @@ if st.session_state.page == 'pb_register':
                     if os.path.exists(pb_data_path):
                         # Load existing user data from CSV
                         df = pd.read_csv(pb_data_path)
-                    
-                    # Add new user data to CSV
-                        new_user_data = {
-                            "Username": create_uname,
-                            "Password": create_password
-                        }
-                        new_user_df = pd.DataFrame([new_user_data])
-                        
-                        # Append new data to CSV
-                        new_user_df.to_csv(pb_data_path, mode='a', index=False, header=False)
-                        st.success("Account created successfully! You can now sign in.")
-                        placeholder.empty()
-                        st.session_state.page = 'parcel_hub'
-
                     else:
-                        # If CSV doesn't exist, create it and save the user data
-                        new_user_data = {
-                            "Username": create_uname,
-                            "Password": create_password
-                        }
-                        df = pd.DataFrame([new_user_data])
-                        df.to_csv(ph_data_path, index=False)
-                        st.success("Account created successfully! You can now sign in.")
-                        placeholder.empty()
-                        st.session_state.page = 'parcel_hub'
-            
+                        # Create new data frame if file doesn't exist
+                        df = pd.DataFrame(columns=["Username", "Password"])
+
+                    # Add new user data to DataFrame
+                    new_user_data = {"Username": create_uname, "Password": create_password}
+                    df = pd.concat([df, pd.DataFrame([new_user_data])], ignore_index=True)
+                    
+                    # Save to CSV
+                    df.to_csv(pb_data_path, index=False)
+                    st.success("Account created successfully! You can now sign in.")
+                    st.session_state.page = 'parcel_hub'
+
             elif login == 'Sign In':
-        
                 st.markdown('<h2>Sign in</h2>', unsafe_allow_html=True)
                 st.markdown('<p>Fill in the details below to sign in.</p>', unsafe_allow_html=True)
 
                 # Input fields for user data
                 uname = st.text_input("Username", "Enter username")
                 password = st.text_input("Enter a password", type="password")
-                
+
                 if st.button("Sign In"):
-                    
-                    # Define CSV file path 
+                    # Define CSV file path
                     pb_data_path = 'pb_admin_data.csv'
-                    
-                    
+
                     if os.path.exists(pb_data_path):
                         # Load user data from CSV
                         df = pd.read_csv(pb_data_path)
-                        #check if the entered credentials match any row in the data
-                        user_exists = df[(df["Username"]== uname) & (df["Password"] == password)]
-                        
+
+                        # Check if the entered credentials match any row in the data
+                        user_exists = df[(df["Username"] == uname) & (df["Password"] == password)]
+
                         if not user_exists.empty:
-                            st.session_state.page = 'parcel_hub'  # Navigate to parcel hub page
                             st.success("Signed in successfully!")
-                            st.session_state.page = 'parcel_hub'
+                            st.session_state.page = 'parcel_bro'  # Navigate to parcel hub page
                         else:
                             st.error("Invalid username or password. Please try again.")
-                            placeholder.empty()  # Clear sign in page content    
-
                     else:
                         st.error("No registered users found. Please sign up first.")
-                        placeholder.empty()  # Clear sign in page content    
 
-        with col2: 
+        with col2:
             st.write("")
             st.write("")
             if st.button("Back"):
                 st.session_state.page = 'landing'
+
     
     
 if st.session_state.page == 'parcel_bro':
     placeholder.empty()
     with placeholder.container():
-        st.markdown("""
-        <style>
-        /* Set the background color of the main container */
-        .main {
-            background-color: white;
-            padding: 10px;
-        }
                 
-        /* Global text color to blue */
-        h1 {
-            color: #344EAD !important;
-        }
-        
-        h2, h3, h4, p {
-            color: #000000;
-        }
-    
-        .stButton > button {
-            background-color: #344EAD ;
-            color: white; !important;
-        }
-        </style> 
-        """, unsafe_allow_html=True)
-        
         st.sidebar.title("Admin Pages")
         
         col1, col2 = st.columns([8, 1])
@@ -1384,18 +1322,6 @@ if st.session_state.page == 'parcel_bro':
             st.write("The CSV file data:")
             st.dataframe(df)
             
-            
-            # Upload Images Section
-            with st.expander("Upload Images", expanded=True):
-                uploaded_files = st.file_uploader(
-                    "Choose images to upload", accept_multiple_files=True, type=["png", "jpg", "jpeg"]
-                )
-
-                if uploaded_files:
-                    for uploaded_file in uploaded_files:
-                        with open(os.path.join(PAYMENT_IMG_FOLDER, uploaded_file.name), "wb") as f:
-                            f.write(uploaded_file.getbuffer())
-                        st.success(f"Uploaded {uploaded_file.name} successfully!")
 
             # Payment Handling Section
             PAYMENT_FILE = "payment.txt"
@@ -1449,7 +1375,7 @@ if st.session_state.page == 'parcel_bro':
                     if image_files:
                         for image_file in image_files:
                             st.write(f"Image: {image_file}")
-                            st.image(os.path.join(PAYMENT_IMG_FOLDER, image_file), caption=image_file, use_column_width=True)
+                            st.image(os.path.join(PAYMENT_IMG_FOLDER, image_file), caption=image_file, width=200)
 
                             # Use a unique key for each delete button to avoid re-renders
                             if st.button(f"Delete {image_file}", key=image_file):
