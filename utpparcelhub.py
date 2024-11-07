@@ -28,7 +28,6 @@ if 'page' not in st.session_state:
 placeholder = st.empty()
 
 # Splash Screen
-
 # Checks if the value of st.session_state.page is set to 'splash_screen'
 if st.session_state.page == 'splash_screen':
     st.markdown("""
@@ -58,11 +57,25 @@ if st.session_state.page == 'splash_screen':
         time.sleep(3)  # Show splash screen for 3 seconds
         st.session_state.page = 'landing'  # Switch to landing page
         placeholder.empty()  # Clear the splash screen
+        
 
 # Landing Page
 if st.session_state.page == 'landing':
     placeholder.empty()  # Ensure placeholder is cleared before rendering landing page
     with placeholder.container():
+        
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+            
+            # Trigger a re-run
+            st.rerun()
+        
         st.markdown("""
         <style>
         .stApp {
@@ -70,7 +83,7 @@ if st.session_state.page == 'landing':
         }
         .stButton > button {
             background-color: #091F5B;
-            color: white !important;
+            color: white;
             font-weight: bold;
             font-size: 50px;
             width: 100%;
@@ -85,7 +98,7 @@ if st.session_state.page == 'landing':
         }
         </style>
         """, unsafe_allow_html=True)
-
+        
         # Layout: Two columns for buttons
         col1, col2 = st.columns([1, 1])
 
@@ -98,18 +111,31 @@ if st.session_state.page == 'landing':
         # Button for "Parcel Hub Admin" navigation
         with col2:
             if st.button('Parcel Hub Admin'):
-                st.session_state.page = 'ph_sign_in'  # Set page to 'parcel_hub'
+                st.session_state.page = 'ph_register'  # Set page to 'parcel_hub'
                 placeholder.empty()  # Clear the landing page before rendering the new one
         
         # Additional Button for "Parcel Bro Admin"
         if st.button('Parcel Bro Admin'):
-            st.session_state.page = 'pb_sign_in'  # Set page to 'parcel_bro'
+            st.session_state.page = 'pb_register'  # Set page to 'parcel_bro'
             placeholder.empty()  # Clear the landing page before rendering the new one
+
 
 # Define directory and file path
 if st.session_state.page == 'user_detail':
     placeholder.empty()
     with placeholder.container():
+        
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+            
+            # Trigger a re-run
+            st.rerun()
     
         DIRECTORY = 'data'
         csv_file_path = os.path.join(DIRECTORY, 'user_data.csv')
@@ -132,6 +158,18 @@ if st.session_state.page == 'user_detail':
         if st.session_state.page == 'user_detail':
             placeholder.empty()
             with placeholder.container():
+            # Set a re-run flag in session state if it doesn't already exist
+                if 'rerun_flag' not in st.session_state:
+                    st.session_state.rerun_flag = False
+
+                # Check if re-run is needed based on your condition
+                if not st.session_state.rerun_flag:
+                    # Set the flag to True to avoid future re-runs
+                    st.session_state.rerun_flag = True
+                    
+                    # Trigger a re-run
+                    st.rerun()
+                    
                 st.markdown("""
                 <style>
                 .stApp {
@@ -173,8 +211,6 @@ if st.session_state.page == 'user_detail':
                 name = st.text_input("Name", "Enter name on parcel")
                 phoneNum = st.text_input("Phone Number", "Enter your Phone Number")
                 
-                st.divider()
-
                 # Title 
                 st.markdown('<h2>Address</h2>', unsafe_allow_html=True)
                 st.markdown('<p>Kindly select your address for delivery purposes. </p>', unsafe_allow_html=True)
@@ -225,7 +261,7 @@ if st.session_state.page == 'user_detail':
                         csv_file_path = 'user_data.csv'
                         
                         # Debug: Display the data being saved
-                        st.write("Data to be saved:", df)
+                        # st.write("Data to be saved:", df)
 
                         # Attempt to save data to CSV file with error handling
                         try:
@@ -239,16 +275,29 @@ if st.session_state.page == 'user_detail':
                             
                         placeholder.empty()
                         st.session_state.page = 'home'
-
             
+
 # Home Page
 if st.session_state.page == 'home': 
     placeholder.empty()  # Ensure landing page is cleared      
     with placeholder.container():
+        
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+            
+            # Trigger a re-run
+            st.rerun()
+            
         st.markdown("""
         <style>
             .stApp {
-                background-color: white;
+                background-color: #F1F0EC;
             }
             
             h2, h3, h4, h5 {
@@ -275,10 +324,11 @@ if st.session_state.page == 'home':
             }
         </style>
         """, unsafe_allow_html=True) 
-              
+                
         st.markdown('<h2 class="header">Welcome, {}</h2>'.format(st.session_state.name), unsafe_allow_html=True)
-        st.image("holiday_notice_image.png.png")  # Ensure the path is correct
+        st.image("C:/Users/Ainin Sofiya/Documents/UTP/YEAR 3/FYP I/Images/holiday_notice_image.png.png")  # Ensure the path is correct
         st.markdown('<h5 class="header">Current Address: {}</h5>'.format(st.session_state.address), unsafe_allow_html=True)
+        
 
         left_col, right_col = st.columns([1, 1])
         with left_col:
@@ -294,7 +344,12 @@ if st.session_state.page == 'home':
         if st.button("Parcel Availability"):
             st.session_state.page = 'parcel_availability'  # Navigate to 'parcel_availability'
             placeholder.empty()
-
+        
+        st.divider()
+        
+        if st.button('Notification'):
+            st.session_state.page = 'notification'
+            placeholder.empty()
 
         if st.button("Need Help? Reach out to us."):
             st.session_state.page = 'cust_service'  # Navigate to 'cust_service'
@@ -302,16 +357,115 @@ if st.session_state.page == 'home':
         
         if st.button('Back'):
            st.session_state.page = 'landing'  # Set page to 'landing' page
+           placeholder.empty()
+           
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+            
+            # Trigger a re-run
+            st.rerun()
             
             
+# Notification Page
+if st.session_state.page == 'notification':
+    placeholder.empty()  # Ensure Home page is cleared
+    with placeholder.container():
+        
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+            
+            # Trigger a re-run
+            st.rerun()
+            
+        st.markdown("""
+        <style>
+        .stApp {
+            background-color: white;
+            padding: 10px;
+        }
+                
+        /* Global text color to blue */
+        h1 {
+            color: #344EAD !important;
+        }
+        
+        h2, h3, h4, p {
+            color: #000000;
+        }
+    
+        .stButton > button {
+            background-color: #344EAD ;
+            color: white; !important;
+        }
+        </style> 
+        """, unsafe_allow_html=True)
+    
+    st.title("Payment Details")
+    st.subheader("Review Payment Information")
+
+    
+    # Folder where images and text files are stored
+    PAYMENT_FILE = "payment.txt"
+    PAYMENT_IMG_FOLDER = "payment_images"
+
+    # Check and display payment details from text file
+    if os.path.exists(PAYMENT_FILE):
+        try:
+            with open(PAYMENT_FILE, "r") as f:
+                payment = f.read()
+            if payment:
+                st.write(payment)
+            else:
+                st.write("No payment details available at the moment.")
+        except Exception as e:
+            st.error("Error reading payment details.")
+    else:
+        st.write("No payment details found.")
+
+    # Display any images related to the payment (optional)
+    if os.path.exists(PAYMENT_IMG_FOLDER):
+        image_files = os.listdir(PAYMENT_IMG_FOLDER)
+        if image_files:
+            st.subheader("Payment Related Images")
+            for img_file in image_files:
+                st.image(os.path.join(PAYMENT_IMG_FOLDER, img_file), use_column_width=True)
+        else:
+            st.write("No images available.")
+    else:
+        st.write("Image folder not found.")
+        
 # Information Page           
 if st.session_state.page == 'information':
     placeholder.empty()  # Ensure Home page is cleared
     with placeholder.container():
+        
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+            
+            # Trigger a re-run
+            st.rerun()
+            
         st.markdown("""
         <style>
-        /* Set the background color of the main container */
-        .main {
+        .stApp {
             background-color: white;
             padding: 10px;
         }
@@ -370,11 +524,25 @@ if st.session_state.page == 'information':
         
         with col2:
             if st.button('Close'):
-                st.session_state.page = 'landing'  # Set page to 'landing' page
+                st.session_state.page = 'home'  # Set page to 'landing' page
+
 
 if st.session_state.page == 'delivery':
     placeholder.empty() # Clear home page content
     with placeholder.container():
+        
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+
+            # Trigger a re-run
+            st.rerun()
+        
         # Custom CSS to style the page
         st.markdown("""
         <style>
@@ -398,7 +566,7 @@ if st.session_state.page == 'delivery':
                 margin-top: -30px; /* Adjust the top margin to reduce space */
             }
 
-            /* Custom button styling for all buttons */
+            
             .stButton > button {
                 background-color: #d8a15d !important;
                 color: white !important;
@@ -417,7 +585,7 @@ if st.session_state.page == 'delivery':
             }
         </style>
         """, unsafe_allow_html=True)
-        
+            
         col1, col2 = st.columns([8, 1])
         
         with col1: 
@@ -465,11 +633,12 @@ if st.session_state.page == 'delivery':
     
             st.write("")
             st.write("")
+            
 
             # Center the "Done" button using three columns
             colA, colB, colC = st.columns([4, 1, 4])
             with colB:
-                if st.button("Done"):
+                if st.button("Done", key="done_button"):
                     # Create a dictionary of the inputs
                     user_data = {
                         "Name": st.session_state.name,
@@ -496,18 +665,65 @@ if st.session_state.page == 'delivery':
                         df.to_csv(csv_file_path, mode='a', index=False, header=False)
                     else:
                         df.to_csv(csv_file_path, index=False)
+                        
+                    # Set a re-run flag in session state if it doesn't already exist
+                    if 'rerun_flag' not in st.session_state:
+                        st.session_state.rerun_flag = False
 
-                    # Display success message
+                    # Check if re-run is needed based on your condition
+                    if not st.session_state.rerun_flag:
+                        # Set the flag to True to avoid future re-runs
+                        st.session_state.rerun_flag = True
+
+                        # Trigger a re-run
+                        st.rerun()
+
                     st.session_state.page = 'home'
                     
         with col2: 
-            if st.button('Back'):
+            if st.button('Back', key='back_button' ):
                 st.session_state.page = 'home'  # Set page to 'landing' page
+                
 
 if st.session_state.page == 'parcel_availability':
     placeholder.empty()
     with placeholder.container():
         
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+
+            # Trigger a re-run
+            st.rerun()
+                        
+        st.markdown("""
+        <style>
+        .stApp {
+            background-color: white;
+            padding: 10px;
+        }
+                
+        /* Global text color to blue */
+        h1 {
+            color: #344EAD !important;
+        }
+        
+        h2, h3, h4, p {
+            color: #000000;
+        }
+    
+        .stButton > button {
+            background-color: #344EAD ;
+            color: white; !important;
+        }
+        </style> 
+        """, unsafe_allow_html=True)
+    
         col1, col2 = st.columns([8, 1])
         
         with col1:
@@ -550,12 +766,25 @@ if st.session_state.page == 'parcel_availability':
                     st.warning("Please enter a Tracking Number.")
                     
         with col2:
-            if st.button('Close'):
+            if st.button('Back', key='trackingnum_back'):    
                 st.session_state.page = 'home'  # Set page to 'home' page
         
+            
 if st.session_state.page == 'cust_service':
     placeholder.empty()
     with placeholder.container():
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+
+            # Trigger a re-run
+            st.rerun()
+    
         st.markdown("""
         <style>
         /* Set the background color of the main container */
@@ -613,86 +842,176 @@ if st.session_state.page == 'cust_service':
             st.write("")
             if st.button('Close'):
                 st.session_state.page = 'home'  # Set page to 'home' page
+        
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+
+            # Trigger a re-run
+            st.rerun()
+    
 
 
-# Parcel Hub Admin Sign In Page
-if st.session_state.page == 'ph_sign_in':
-        placeholder.empty()
-        with placeholder.container():
-            st.markdown("""
-            <style>
-            .stApp {
-                background-color: #F1F0EC;
-            }
-            h2 {
-                text-align: left;
-                color: #344EAD;      
-            }
-            p {
-                text-align: left;
-                color: #000000;
-            }
-            .stButton button {
-                color: #ffffff;  
-                background-color: #d8a15d;
-                display: flex;
-                justify-content: center;
-                border-radius: 8px;
-                padding: 5px 60px;
-                font-size: 18px;
-                border: 1px solid transparent;
-                display: flex;
-                justify-content: center;
-                margin: auto;
-            }
-            .stButton button:hover {
-                background-color: #B99058;
-                border: 1px solid white;
-                color: white;
-            }    
-            </style>
-            """, unsafe_allow_html=True)
+# Parcel Hub Admin Register Page
+if st.session_state.page == 'ph_register':
+    placeholder.empty()    
+    with placeholder.container():
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+
+            # Trigger a re-run
+            st.rerun()
             
-            st.markdown('<h2>Sign in</h2>', unsafe_allow_html=True)
-            st.markdown('<p>Fill in the details below to sign in.</p>', unsafe_allow_html=True)
-
-            # Input fields for user data
-            uname = st.text_input("Username", "Enter username")
-            password = st.text_input("Enter a password", type="password")
+        st.markdown("""
+        <style>
+        .stApp {
+            background-color: #F1F0EC;
+        }
+        h2 {
+            text-align: left;
+            color: #344EAD;      
+        }
+        p {
+            text-align: left;
+            color: #000000;
+        }
+        .stButton button {
+            color: #ffffff;  
+            background-color: #d8a15d;
+            display: flex;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 5px 15px;
+            font-size: 18px;
+            border: 1px solid transparent;
+            display: flex;
+            justify-content: center;
+            margin: auto;
+        }
+        .stButton button:hover {
+            background-color: #B99058;
+            border: 1px solid white;
+            color: white;
+        }    
+        </style>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns([8,1])
+        
+        with col1:
+            login = st.selectbox("Go to", ["Sign In", "Sign Up"])
             
-            if st.button("Next"):
-                st.session_state.page = 'parcel_hub'
+            if login == 'Sign Up':
                 
-                ph_admin_data = {
-                    "Username": uname,
-                    "Password": password
-                }
+                st.markdown('<h2>Sign Up</h2>', unsafe_allow_html=True)
+                st.markdown('<p>Fill in the details below to sign up.</p>', unsafe_allow_html=True)
                 
-                # Convert the dictionary to a DataFrame
-                df = pd.DataFrame([ph_admin_data])
+                # Input fields for user data
+                create_uname = st.text_input("Username", "Create username")
+                create_password = st.text_input("Create a password", type="password")
                 
-                # Define CSV file path
-                ph_data_path = 'ph_admin_data.csv'
-                
-                # Append to CSV if it exists, otherwise create a new file
-                if os.path.exists(ph_data_path):
-                    # If the file exists, append without adding the header again
-                    df.to_csv(ph_data_path, mode='a', index=False, header=False)
-                else:
-                    # If the file does not exist, create it and include the header
-                    df.to_csv(ph_data_path, index=False)
-                
-                # Confirm data saving
-                st.success("User data saved successfully!")
-                
-                # Empty the placeholder to clear the current form
-                placeholder.empty()
-                st.session_state.page = 'parcel_hub'
+                if st.button("Sign Up"):
+                    # Define CSV file path
+                    ph_data_path = 'ph_admin_data.csv'
 
+                    if os.path.exists(ph_data_path):
+                        # Load existing user data from CSV
+                        df = pd.read_csv(ph_data_path)
+                    
+                    # Add new user data to CSV
+                        new_user_data = {
+                            "Username": create_uname,
+                            "Password": create_password
+                        }
+                        new_user_df = pd.DataFrame([new_user_data])
+                        
+                        # Append new data to CSV
+                        new_user_df.to_csv(ph_data_path, mode='a', index=False, header=False)
+                        st.success("Account created successfully! You can now sign in.")
+                        placeholder.empty()
+                        st.session_state.page = 'parcel_hub'
+
+                    else:
+                        # If CSV doesn't exist, create it and save the user data
+                        new_user_data = {
+                            "Username": create_uname,
+                            "Password": create_password
+                        }
+                        df = pd.DataFrame([new_user_data])
+                        df.to_csv(ph_data_path, index=False)
+                        st.success("Account created successfully! You can now sign in.")
+                        placeholder.empty()
+                        st.session_state.page = 'parcel_hub'
+            
+            elif login == 'Sign In':
+        
+                st.markdown('<h2>Sign in</h2>', unsafe_allow_html=True)
+                st.markdown('<p>Fill in the details below to sign in.</p>', unsafe_allow_html=True)
+
+                # Input fields for user data
+                uname = st.text_input("Username", "Enter username")
+                password = st.text_input("Enter a password", type="password")
+                
+                if st.button("Sign In"):
+                    
+                    # Define CSV file path 
+                    ph_data_path = 'ph_admin_data.csv'
+                    
+                    
+                    if os.path.exists(ph_data_path):
+                        # Load user data from CSV
+                        df = pd.read_csv(ph_data_path)
+                        #check if the entered credentials match any row in the data
+                        user_exists = df[(df["Username"]== uname) & (df["Password"] == password)]
+                        
+                        if not user_exists.empty:
+                            st.session_state.page = 'parcel_hub'  # Navigate to parcel hub page
+                            st.success("Signed in successfully!")
+                            st.session_state.page = 'parcel_hub'
+                        else:
+                            st.error("Invalid username or password. Please try again.")
+                            placeholder.empty()  # Clear sign in page content    
+
+                    else:
+                        st.error("No registered users found. Please sign up first.")
+                        placeholder.empty()  # Clear sign in page content    
+
+        with col2: 
+            st.write("")
+            st.write("")
+            if st.button("Back"):
+                st.session_state.page = 'landing'
+        
+        
 # Parcel Hub Admin Page
 if st.session_state.page == 'parcel_hub':
-    placeholder.empty()  # Clear landing page content
+    placeholder.empty()  # Clear landing page content    
     with placeholder.container():
+        
+         # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+
+            # Trigger a re-run
+            st.rerun()
+        
+            
         st.sidebar.title("Admin Pages")
         
         col1, col2 = st.columns([8, 1])
@@ -883,12 +1202,25 @@ if st.session_state.page == 'parcel_hub':
         with col2: 
             st.write("")
             st.write("")
-            if st.button('Back'):
+            if st.button('Back', key='ph_back'):
                 st.session_state.page = 'landing'  # Set page to 'landing' page
+        
 
-if st.session_state.page == 'pb_sign_in':
-    placeholder.empty()
+if st.session_state.page == 'pb_register':
+    placeholder.empty()    
     with placeholder.container():
+        # Set a re-run flag in session state if it doesn't already exist
+        if 'rerun_flag' not in st.session_state:
+            st.session_state.rerun_flag = False
+
+        # Check if re-run is needed based on your condition
+        if not st.session_state.rerun_flag:
+            # Set the flag to True to avoid future re-runs
+            st.session_state.rerun_flag = True
+
+            # Trigger a re-run
+            st.rerun()
+            
         st.markdown("""
         <style>
         .stApp {
@@ -908,7 +1240,7 @@ if st.session_state.page == 'pb_sign_in':
             display: flex;
             justify-content: center;
             border-radius: 8px;
-            padding: 5px 60px;
+            padding: 5px 15px;
             font-size: 18px;
             border: 1px solid transparent;
             display: flex;
@@ -923,42 +1255,92 @@ if st.session_state.page == 'pb_sign_in':
         </style>
         """, unsafe_allow_html=True)
         
-        st.markdown('<h2>Sign in</h2>', unsafe_allow_html=True)
-        st.markdown('<p>Fill in the details below to sign in.</p>', unsafe_allow_html=True)
-
-        # Input fields for user data
-        uname = st.text_input("Username", "Enter username")
-        password = st.text_input("Enter a password", type="password")
+        col1, col2 = st.columns([8,1])
         
-        if st.button("Next"):
-            st.session_state.page = 'parcel_hub'
+        with col1:
+            login = st.selectbox("Go to", ["Sign In", "Sign Up"])
             
-            pb_admin_data = {
-                "Username": uname,
-                "Password": password
-            }
-            
-            # Convert the dictionary to a DataFrame
-            df = pd.DataFrame([pb_admin_data])
-            
-            # Define CSV file path
-            pb_data_path = 'pb_admin_data.csv'
-            
-            # Append to CSV if it exists, otherwise create a new file
-            if os.path.exists(pb_data_path):
-                # If the file exists, append without adding the header again
-                df.to_csv(pb_data_path, mode='a', index=False, header=False)
-            else:
-                # If the file does not exist, create it and include the header
-                df.to_csv(pb_data_path, index=False)
-            
-            # Confirm data saving
-            st.success("User data saved successfully!")
-            
-            # Empty the placeholder to clear the current form
-            placeholder.empty()
-            st.session_state.page = 'parcel_bro'
+            if login == 'Sign Up':
+                
+                st.markdown('<h2>Sign Up</h2>', unsafe_allow_html=True)
+                st.markdown('<p>Fill in the details below to sign up.</p>', unsafe_allow_html=True)
+                
+                # Input fields for user data
+                create_uname = st.text_input("Username", "Create username")
+                create_password = st.text_input("Create a password", type="password")
+                
+                if st.button("Sign Up"):
+                    # Define CSV file path
+                    pb_data_path = 'pb_admin_data.csv'
 
+                    if os.path.exists(pb_data_path):
+                        # Load existing user data from CSV
+                        df = pd.read_csv(pb_data_path)
+                    
+                    # Add new user data to CSV
+                        new_user_data = {
+                            "Username": create_uname,
+                            "Password": create_password
+                        }
+                        new_user_df = pd.DataFrame([new_user_data])
+                        
+                        # Append new data to CSV
+                        new_user_df.to_csv(pb_data_path, mode='a', index=False, header=False)
+                        st.success("Account created successfully! You can now sign in.")
+                        placeholder.empty()
+                        st.session_state.page = 'parcel_hub'
+
+                    else:
+                        # If CSV doesn't exist, create it and save the user data
+                        new_user_data = {
+                            "Username": create_uname,
+                            "Password": create_password
+                        }
+                        df = pd.DataFrame([new_user_data])
+                        df.to_csv(ph_data_path, index=False)
+                        st.success("Account created successfully! You can now sign in.")
+                        placeholder.empty()
+                        st.session_state.page = 'parcel_hub'
+            
+            elif login == 'Sign In':
+        
+                st.markdown('<h2>Sign in</h2>', unsafe_allow_html=True)
+                st.markdown('<p>Fill in the details below to sign in.</p>', unsafe_allow_html=True)
+
+                # Input fields for user data
+                uname = st.text_input("Username", "Enter username")
+                password = st.text_input("Enter a password", type="password")
+                
+                if st.button("Sign In"):
+                    
+                    # Define CSV file path 
+                    pb_data_path = 'pb_admin_data.csv'
+                    
+                    
+                    if os.path.exists(pb_data_path):
+                        # Load user data from CSV
+                        df = pd.read_csv(pb_data_path)
+                        #check if the entered credentials match any row in the data
+                        user_exists = df[(df["Username"]== uname) & (df["Password"] == password)]
+                        
+                        if not user_exists.empty:
+                            st.session_state.page = 'parcel_hub'  # Navigate to parcel hub page
+                            st.success("Signed in successfully!")
+                            st.session_state.page = 'parcel_hub'
+                        else:
+                            st.error("Invalid username or password. Please try again.")
+                            placeholder.empty()  # Clear sign in page content    
+
+                    else:
+                        st.error("No registered users found. Please sign up first.")
+                        placeholder.empty()  # Clear sign in page content    
+
+        with col2: 
+            st.write("")
+            st.write("")
+            if st.button("Back"):
+                st.session_state.page = 'landing'
+    
     
 if st.session_state.page == 'parcel_bro':
     placeholder.empty()
@@ -991,7 +1373,7 @@ if st.session_state.page == 'parcel_bro':
         
         col1, col2 = st.columns([8, 1])
         with col1:
-            st.title("Parcel Bro Admin Page")
+            st.title("Parcel Bro Admin Pages")
             st.write("Current data on parcel delivery")
             
             # Load the CSV file
@@ -999,9 +1381,88 @@ if st.session_state.page == 'parcel_bro':
             df = pd.read_csv(csv_file_path)
 
             # Display the CSV data in Streamlit
-            st.write("Here is the CSV file data:")
-            st.dataframe(df) 
+            st.write("The CSV file data:")
+            st.dataframe(df)
             
+            
+            # Upload Images Section
+            with st.expander("Upload Images", expanded=True):
+                uploaded_files = st.file_uploader(
+                    "Choose images to upload", accept_multiple_files=True, type=["png", "jpg", "jpeg"]
+                )
+
+                if uploaded_files:
+                    for uploaded_file in uploaded_files:
+                        with open(os.path.join(PAYMENT_IMG_FOLDER, uploaded_file.name), "wb") as f:
+                            f.write(uploaded_file.getbuffer())
+                        st.success(f"Uploaded {uploaded_file.name} successfully!")
+
+            # Payment Handling Section
+            PAYMENT_FILE = "payment.txt"
+            PAYMENT_IMG_FOLDER = "payment_images"
+
+            # Ensure the folder exists
+            if not os.path.exists(PAYMENT_IMG_FOLDER):
+                os.makedirs(PAYMENT_IMG_FOLDER)
+
+            # Upload Images Section
+            with st.expander("Upload Images", expanded=True):
+                uploaded_files = st.file_uploader(
+                    "Choose images to upload", accept_multiple_files=True, type=["png", "jpg", "jpeg"]
+                )
+
+                if uploaded_files:
+                    for uploaded_file in uploaded_files:
+                        with open(os.path.join(PAYMENT_IMG_FOLDER, uploaded_file.name), "wb") as f:
+                            f.write(uploaded_file.getbuffer())
+                        st.success(f"Uploaded {uploaded_file.name} successfully!")
+
+            # Payment Handling Section
+            with st.expander("Payment Handling", expanded=True):
+                payment = st.text_area("Write payment details here:")
+
+                if st.button("Save Payment Details"):
+                    with open(PAYMENT_FILE, "w") as f:
+                        f.write(payment)
+                    st.success("Payment details saved successfully!")
+
+                # Display current payment details if available
+                if os.path.exists(PAYMENT_FILE):
+                    st.subheader("Current Payment")
+                    with open(PAYMENT_FILE, "r") as f:
+                        current_payment = f.read()
+                    st.write(current_payment)
+
+                    if st.button("Delete Payment"):
+                        os.remove(PAYMENT_FILE)
+                        st.success("Payment details deleted successfully!")
+                else:
+                    st.write("No payment posted yet.")
+
+            # Manage Uploaded Images Section
+            with st.expander("Manage Uploaded Images", expanded=True):
+                st.subheader("Uploaded Images")
+
+                if os.path.exists(PAYMENT_IMG_FOLDER):
+                    image_files = [f for f in os.listdir(PAYMENT_IMG_FOLDER) if f.endswith(('.png', '.jpg', '.jpeg'))]
+
+                    if image_files:
+                        for image_file in image_files:
+                            st.write(f"Image: {image_file}")
+                            st.image(os.path.join(PAYMENT_IMG_FOLDER, image_file), caption=image_file, use_column_width=True)
+
+                            # Use a unique key for each delete button to avoid re-renders
+                            if st.button(f"Delete {image_file}", key=image_file):
+                                os.remove(os.path.join(PAYMENT_IMG_FOLDER, image_file))
+                                st.success(f"Deleted {image_file} successfully!")
+                                st.experimental_rerun()  # Refresh after deletion to update list
+                    else:
+                        st.write("No images uploaded yet.")
+
+    
         with col2:
             if st.button("Back"):
                 st.session_state.page = 'landing'
+                
+        
+
