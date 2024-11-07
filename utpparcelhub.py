@@ -991,7 +991,7 @@ if st.session_state.page == 'parcel_bro':
         
         col1, col2 = st.columns([8, 1])
         with col1:
-            st.title("Parcel Bro Admin Pages")
+            st.title("Parcel Bro Admin Page")
             st.write("Current data on parcel delivery")
             
             # Load the CSV file
