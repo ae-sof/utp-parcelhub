@@ -846,7 +846,7 @@ if st.session_state.page == 'ph_register':
         st.markdown("""
         <style>
         .stApp {
-            background-color: white;
+            background-color: #F1F0EC;
         }
         h2 {
             text-align: left;
@@ -910,7 +910,7 @@ if st.session_state.page == 'ph_register':
                         new_user_df.to_csv(ph_data_path, mode='a', index=False, header=False)
                         st.success("Account created successfully! You can now sign in.")
                         placeholder.empty()
-                        st.session_state.page = 'ph_register'
+                        st.session_state.page = 'parcel_hub'
 
                     else:
                         # If CSV doesn't exist, create it and save the user data
@@ -922,7 +922,7 @@ if st.session_state.page == 'ph_register':
                         df.to_csv(ph_data_path, index=False)
                         st.success("Account created successfully! You can now sign in.")
                         placeholder.empty()
-                        st.session_state.page = 'ph_register'
+                        st.session_state.page = 'parcel_hub'
             
             elif login == 'Sign In':
         
@@ -1228,7 +1228,7 @@ if st.session_state.page == 'pb_register':
                     # Save to CSV
                     df.to_csv(pb_data_path, index=False)
                     st.success("Account created successfully! You can now sign in.")
-                    st.session_state.page = 'pb_register'
+                    st.session_state.page = 'parcel_hub'
 
             elif login == 'Sign In':
                 st.markdown('<h2>Sign in</h2>', unsafe_allow_html=True)
