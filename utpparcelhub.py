@@ -846,7 +846,7 @@ if st.session_state.page == 'ph_register':
         st.markdown("""
         <style>
         .stApp {
-            background-color: white;
+            background-color: white !important;
         }
         h2 {
             text-align: left;
