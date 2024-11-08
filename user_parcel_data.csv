@@ -1,0 +1,8 @@
+Name,Phone Number,Address,Quantity of Parcel,Earliest Date,Latest Date,Tracking Number,Fragile,Items in Parcel,Parcel Categories,Delivery Slot
+Sof,6012,V3C,1,6/11/2024,6/11/2024,SPX12 (Today),Yes,-,K (Small Parcels),SLOT E [7.30PM-10.45PM]
+Sof,6012,V3C,1,6/11/2024,6/11/2024,SPX12,No,-,K (Small Parcels),SLOT E [7.30PM-10.45PM]
+Keihan,60123,V5B,1,5/11/2024,5/11/2024,SPX123,Yes,-,A & B (<1kg),SLOT F [9.45PM-11.59PM]
+zico,6012,V3C,1,2024-11-07,2024-11-07,SPX3912,Yes,-,K (Small Parcels),SLOT E [7.30PM-10.45PM]
+Nad,601245,V1A,1,2024-11-07,2024-11-07,SPX1234,Yes,-,A & B (<1kg),SLOT E [7.30PM-10.45PM]
+chop,60124,V2,1,2024-11-07,2024-11-07,SPX124,Yes,Glass,E (>3kg),SLOT E [7.30PM-10.45PM]
+lana,6015,V1A,2,2024-11-05,2024-11-07,SPX246,Yes,mirrors,"A & B (<1kg), K (Small Parcels)",SLOT E [7.30PM-10.45PM]
