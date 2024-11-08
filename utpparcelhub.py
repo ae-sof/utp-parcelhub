@@ -140,7 +140,7 @@ if st.session_state.page == 'user_detail':
         st.markdown("""
         <style>
         .stApp {
-            background-color: #F1F0EC;
+            background-color: #F1F0EC !important;
         }
         h2 {
             text-align: left;
@@ -233,7 +233,7 @@ if st.session_state.page == 'user_detail':
                 
                 # Remember name. phone num, and address even if app page changes / rerun
                 st.session_state.name = name 
-                st.session_state.phoneNum = phoneNum
+                st.session_state.phoneNum = str(phoneNum)
                 st.session_state.address = selected_value
                 
                 user_data = {
@@ -529,8 +529,8 @@ if st.session_state.page == 'delivery':
         st.markdown("""
         <style>
             /* Set the background color of the main container */
-            .stApp {
-                background-color: white !important;
+            .main {
+                background-color: white;
                 padding: 10px;
             }
             
@@ -781,11 +781,11 @@ if st.session_state.page == 'cust_service':
         }
         
         h2, h3, h4, p {
-            color: #000000;
+            color: #344EAD;
         }
     
         .stButton > button {
-            background-color: #344EAD ;
+            background-color: #344EAD;
             color: white; !important;
         }
         </style> 
@@ -838,35 +838,30 @@ if st.session_state.page == 'cust_service':
             st.rerun()
     
 
-
 # Parcel Hub Admin Register Page
 if st.session_state.page == 'ph_register':
-    placeholder.empty()    
-    with placeholder.container():                   
+    placeholder.empty()
+    with placeholder.container():
         st.markdown("""
         <style>
         .stApp {
-            background-color: white !important;
+            background-color: white;
         }
         h2 {
             text-align: left;
-            color: #344EAD;      
+            color: #344EAD !important;      
         }
         p {
             text-align: left;
             color: #000000;
         }
         .stButton button {
-            color: #344EAD;  
+            color: #ffffff;  
             background-color: #d8a15d;
-            display: flex;
-            justify-content: center;
             border-radius: 8px;
             padding: 5px 15px;
             font-size: 18px;
             border: 1px solid transparent;
-            display: flex;
-            justify-content: center;
             margin: auto;
         }
         .stButton button:hover {
@@ -876,92 +871,68 @@ if st.session_state.page == 'ph_register':
         }    
         </style>
         """, unsafe_allow_html=True)
-            
-        col1, col2 = st.columns([8,1])
-        
+
+        col1, col2 = st.columns([8, 1])
+
         with col1:
             login = st.selectbox("Go to", ["Sign In", "Sign Up"])
-            
+
+            ph_data_path = 'ph_admin_data.csv'
+
             if login == 'Sign Up':
-                
                 st.markdown('<h2>Sign Up</h2>', unsafe_allow_html=True)
                 st.markdown('<p>Fill in the details below to sign up.</p>', unsafe_allow_html=True)
-                
+
                 # Input fields for user data
-                create_uname = st.text_input("Username", "Create username")
-                create_password = st.text_input("Create a password", type="password")
-                
+                create_uname = st.text_input("Username", "Create username").strip()
+                create_password = st.text_input("Create a password", type="password").strip()
+
                 if st.button("Sign Up"):
-                    # Define CSV file path
-                    ph_data_path = 'ph_admin_data.csv'
-
+                    # Check if CSV file exists, load existing data if it does, or create a new DataFrame if not
                     if os.path.exists(ph_data_path):
-                        # Load existing user data from CSV
                         df = pd.read_csv(ph_data_path)
-                    
-                    # Add new user data to CSV
-                        new_user_data = {
-                            "Username": create_uname,
-                            "Password": create_password
-                        }
-                        new_user_df = pd.DataFrame([new_user_data])
-                        
-                        # Append new data to CSV
-                        new_user_df.to_csv(ph_data_path, mode='a', index=False, header=False)
-                        st.success("Account created successfully! You can now sign in.")
-                        placeholder.empty()
-                        st.session_state.page = 'parcel_hub'
-
                     else:
-                        # If CSV doesn't exist, create it and save the user data
-                        new_user_data = {
-                            "Username": create_uname,
-                            "Password": create_password
-                        }
-                        df = pd.DataFrame([new_user_data])
-                        df.to_csv(ph_data_path, index=False)
-                        st.success("Account created successfully! You can now sign in.")
-                        placeholder.empty()
-                        st.session_state.page = 'parcel_hub'
-            
+                        df = pd.DataFrame(columns=["Username", "Password"])
+
+                    # Add new user data to DataFrame
+                    new_user_data = {"Username": create_uname, "Password": create_password}
+                    df = pd.concat([df, pd.DataFrame([new_user_data])], ignore_index=True)
+
+                    # Save to CSV
+                    df.to_csv(ph_data_path, index=False)
+                    st.success("Account created successfully! You can now sign in.")
+
             elif login == 'Sign In':
-        
                 st.markdown('<h2>Sign in</h2>', unsafe_allow_html=True)
                 st.markdown('<p>Fill in the details below to sign in.</p>', unsafe_allow_html=True)
 
                 # Input fields for user data
-                uname = st.text_input("Username", "Enter username")
-                password = st.text_input("Enter a password", type="password")
-                
+                uname = st.text_input("Username", "Enter username").strip()
+                password = st.text_input("Enter a password", type="password").strip()
+
                 if st.button("Sign In"):
-                    
-                    # Define CSV file path 
-                    ph_data_path = 'ph_admin_data.csv'
-                    
-                    
+                    # Check if CSV file exists
                     if os.path.exists(ph_data_path):
                         # Load user data from CSV
                         df = pd.read_csv(ph_data_path)
-                        #check if the entered credentials match any row in the data
-                        user_exists = df[(df["Username"]== uname) & (df["Password"] == password)]
-                        
-                        if not user_exists.empty:
-                            st.session_state.page = 'parcel_hub'  # Navigate to parcel hub page
+
+                        # Check if the entered credentials match any row in the data
+                        user_exists = df[(df["Username"] == uname) & (df["Password"] == password)]
+
+                        if user_exists.empty:
                             st.success("Signed in successfully!")
-                            st.session_state.page = 'parcel_hub'
+                            st.session_state.page = 'parcel_hub'  # Navigate to parcel hub page
                         else:
                             st.error("Invalid username or password. Please try again.")
-                            placeholder.empty()  # Clear sign in page content    
-
                     else:
                         st.error("No registered users found. Please sign up first.")
-                        placeholder.empty()  # Clear sign in page content    
 
-        with col2: 
-            st.write("")
-            st.write("")
-            if st.button("Back"):
-                st.session_state.page = 'landing'
+            # Additional navigation
+            with col2:
+                st.write("")
+                st.write("")
+                if st.button("Back"):
+                    st.session_state.page = 'landing'
         
         
 # Parcel Hub Admin Page
@@ -1228,7 +1199,7 @@ if st.session_state.page == 'pb_register':
                     # Save to CSV
                     df.to_csv(pb_data_path, index=False)
                     st.success("Account created successfully! You can now sign in.")
-                    st.session_state.page = 'parcel_hub'
+                    
 
             elif login == 'Sign In':
                 st.markdown('<h2>Sign in</h2>', unsafe_allow_html=True)
@@ -1251,7 +1222,7 @@ if st.session_state.page == 'pb_register':
 
                         if not user_exists.empty:
                             st.success("Signed in successfully!")
-                            st.session_state.page = 'parcel_bro'  # Navigate to parcel hub page
+                            st.session_state.page = 'parcel_bro'  # Navigate to parcel bro page
                         else:
                             st.error("Invalid username or password. Please try again.")
                     else:
@@ -1280,11 +1251,14 @@ if st.session_state.page == 'parcel_bro':
             csv_file_path = 'user_parcel_data.csv'
             df = pd.read_csv(csv_file_path)
 
+            # Convert 'Phone Number' column to string
+            if 'Phone Number' in df.columns:
+                df['Phone Number'] = df['Phone Number'].astype(str)
+                
             # Display the CSV data in Streamlit
             st.write("The CSV file data:")
             st.dataframe(df)
-            
-
+    
             # Payment Handling Section
             PAYMENT_FILE = "payment.txt"
             PAYMENT_IMG_FOLDER = "payment_images"
@@ -1294,7 +1268,7 @@ if st.session_state.page == 'parcel_bro':
                 os.makedirs(PAYMENT_IMG_FOLDER)
 
             # Upload Images Section
-            with st.expander("Upload Images", expanded=True):
+            with st.expander("Upload Images", expanded=False):
                 uploaded_files = st.file_uploader(
                     "Choose images to upload", accept_multiple_files=True, type=["png", "jpg", "jpeg"]
                 )
@@ -1306,7 +1280,7 @@ if st.session_state.page == 'parcel_bro':
                         st.success(f"Uploaded {uploaded_file.name} successfully!")
 
             # Payment Handling Section
-            with st.expander("Payment Handling", expanded=True):
+            with st.expander("Payment Handling", expanded=False):
                 payment = st.text_area("Write payment details here:")
 
                 if st.button("Save Payment Details"):
@@ -1328,7 +1302,7 @@ if st.session_state.page == 'parcel_bro':
                     st.write("No payment posted yet.")
 
             # Manage Uploaded Images Section
-            with st.expander("Manage Uploaded Images", expanded=True):
+            with st.expander("Manage Uploaded Images", expanded=False):
                 st.subheader("Uploaded Images")
 
                 if os.path.exists(PAYMENT_IMG_FOLDER):
@@ -1349,7 +1323,7 @@ if st.session_state.page == 'parcel_bro':
 
     
         with col2:
-            if st.button("Back"):
+            if st.button("Back", key='pb_back'):
                 st.session_state.page = 'landing'
                 
         
