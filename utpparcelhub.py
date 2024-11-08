@@ -529,8 +529,8 @@ if st.session_state.page == 'delivery':
         st.markdown("""
         <style>
             /* Set the background color of the main container */
-            .main {
-                background-color: white;
+            .stApp {
+                background-color: white !important;
                 padding: 10px;
             }
             
