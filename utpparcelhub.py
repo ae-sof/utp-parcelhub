@@ -857,7 +857,7 @@ if st.session_state.page == 'ph_register':
             color: #000000;
         }
         .stButton button {
-            color: #ffffff;  
+            color: #344EAD;  
             background-color: #d8a15d;
             display: flex;
             justify-content: center;
