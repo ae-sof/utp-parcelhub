@@ -1059,7 +1059,7 @@ if st.session_state.page == 'parcel_hub':
                 st.subheader("Manage Images, Announcements, and more")
                 
                 # Upload Images Section
-                with st.expander("Upload Images", expanded=True):
+                with st.expander("Upload Images", expanded=False):
                     uploaded_files = st.file_uploader(
                         "Choose images to upload", accept_multiple_files=True, type=["png", "jpg", "jpeg"]
                     )
@@ -1071,7 +1071,7 @@ if st.session_state.page == 'parcel_hub':
                             st.success(f"Uploaded {uploaded_file.name} successfully!")
 
                 # Post Announcements Section
-                with st.expander("Post and Manage Announcements", expanded=True):
+                with st.expander("Post and Manage Announcements", expanded=False):
                     announcement = st.text_area("Write your announcement here:")
 
                     if st.button("Post Announcement"):
@@ -1092,7 +1092,7 @@ if st.session_state.page == 'parcel_hub':
                         st.write("No announcement posted yet.")
 
                 # Manage Uploaded Images Section
-                with st.expander("Manage Uploaded Images", expanded=True):
+                with st.expander("Manage Uploaded Images", expanded=False):
                     st.subheader("Uploaded Images")
 
                     if os.path.exists(UPLOAD_DIR):
@@ -1112,7 +1112,7 @@ if st.session_state.page == 'parcel_hub':
                             
                 
                 # Manage Customer Feedback section 
-                with st.expander("Manage Customer Feedback", expanded=True):
+                with st.expander("Manage Customer Feedback", expanded=False):
                     st.subheader("Customer Feedback")
                     
                     # Folder where the text is stored
